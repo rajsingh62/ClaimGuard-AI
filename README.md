@@ -5,7 +5,7 @@
 
 ## 🌍 The Future of Insurance Intelligence
 
-ClaimGuard AI is a full-stack **AI + Blockchain-powered Insurance Intelligence Platform** that transforms how users understand policies, analyze claims, and verify results.
+ClaimGuard AI is a full-stack **AI + Blockchain-powered Insurance Intelligence Platform** that transforms how users understand policies, analyze claims, compare options, and verify results.
 
 ❌ No more confusing insurance documents  
 ❌ No more uncertain claim outcomes  
@@ -26,34 +26,34 @@ ClaimGuard AI is a full-stack **AI + Blockchain-powered Insurance Intelligence P
 ## 🧠 Core Capabilities
 
 ### 🤖 AI-Powered Claim Analysis
-- Understands complex insurance policies
-- Analyzes repair bills intelligently
-- Provides clear payout breakdown
+- Understands complex insurance policies  
+- Analyzes repair bills intelligently  
+- Provides clear payout breakdown  
 
 ### 📄 OCR Document Intelligence
-- Extracts text from PDF, PNG, JPG
-- Works with real-world documents
+- Extracts text from PDF, PNG, JPG  
+- Works with real-world documents  
 
 ### 💰 Payout Prediction Engine
 - Identifies:
-  - ✅ Payable items  
-  - ❌ Non-payable items  
-  - 💸 Final claim amount  
+  - Payable items  
+  - Non-payable items  
+  - Final claim amount  
 
 ### 🧾 Multi-Policy Comparison
-- Upload multiple policies
-- Get best recommendation
+- Upload multiple policies  
+- Get best recommendation  
 
 ### 🔮 Scenario Simulation
-- Run “what-if” insurance scenarios
+- Run “what-if” insurance scenarios  
 
 ---
 
 ## 🔐 Blockchain Trust Layer
 
-- ⛓️ Stores proof of every result  
-- 📜 Records key clauses + decisions  
-- 🔍 Enables verification via transaction signature  
+- Stores proof of every result  
+- Records key clauses and decisions  
+- Enables verification via transaction signature  
 
 > Don’t just trust AI — verify it.
 
@@ -71,29 +71,29 @@ flowchart TD
     F --> G[Claim Decision]
     G --> H[Hash Generator]
     H --> I[Solana Blockchain]
-    I --> J[Proof + Signature]
+    I --> J[Proof and Signature]
     J --> A
 🔄 How It Works
-1️⃣ Upload Documents
+1. Upload Documents
 
 User uploads:
 
 Insurance Policy
 Repair Bill
-2️⃣ AI Processing
+2. AI Processing
 OCR extracts text
 AI understands policy clauses
 Matches bill items with coverage
-3️⃣ Decision Engine
+3. Decision Engine
 Calculates:
 Payable items
 Non-payable items
 Total payout
-4️⃣ Blockchain Proof
+4. Blockchain Proof
 Output is hashed
 Stored on blockchain
 Transaction signature generated
-5️⃣ Final Output
+5. Final Output
 Clean UI shows:
 Breakdown
 Explanation
@@ -108,24 +108,24 @@ Verified proof
 }
 🎯 Why This is a Game-Changer
 Feature	Traditional Insurance	ClaimGuard AI
-Policy Understanding	❌ Manual	✅ AI
-Claim Prediction	❌ Uncertain	✅ Instant
-Transparency	❌ Low	✅ High
-Proof	❌ None	✅ Blockchain
-User Control	❌ Limited	✅ Full
-💡 Unique Selling Points (USP)
-🧠 Explainable AI
-🔗 Blockchain-based proof
-⚙️ End-to-end automation
-📊 Real-time results
-🔮 Simulation engine
-📈 Policy recommendation
+Policy Understanding	Manual	AI
+Claim Prediction	Uncertain	Instant
+Transparency	Low	High
+Proof	None	Blockchain
+User Control	Limited	Full
+💡 Unique Selling Points
+Explainable AI
+Blockchain-based proof
+End-to-end automation
+Real-time results
+Scenario simulation
+Policy recommendation system
 🖥️ Tech Stack
-⚡ FastAPI
-🤖 Llama3 via Ollama
-📄 OCR.space API
-⛓️ Solana Blockchain
-🎨 TailwindCSS
+FastAPI
+Llama3 via Ollama
+OCR.space API
+Solana Blockchain
+TailwindCSS
 📁 Project Structure
 ClaimGuard AI/
 ├── main.py
@@ -143,9 +143,9 @@ python main.py
 
 Open: http://localhost:8000
 
-🎤 Startup Pitch
+🎤 Startup One-Liner
 
-ClaimGuard AI turns complex insurance into clear, explainable, and provable decisions using AI and blockchain.
+An AI-powered platform that analyzes policies, predicts claim payouts, compares options, and verifies every result with blockchain proof.
 
 🎬 Demo Flow
 Upload policy
@@ -174,5 +174,3 @@ Real-world deployment
 🚀 ClaimGuard AI
 
 Because fine print shouldn’t win.
-
-
