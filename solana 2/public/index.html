@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClaimGuard AI | Solana-Powered Insurance Verification</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@200;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #020617;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+        }
+        h1, h2, h3, .font-outfit { font-family: 'Outfit', sans-serif; }
+        .glass {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .button-glow:hover {
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+    </style>
+</head>
+<body class="text-slate-200 min-h-screen">
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 glass border-b border-white/5 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-sky-500/20 rounded-xl border border-sky-500/30">
+                    <i data-lucide="shield-check" class="text-sky-400 w-6 h-6"></i>
+                </div>
+                <h1 class="text-2xl font-bold tracking-tight">ClaimGuard <span class="gradient-text">AI</span></h1>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-xs font-semibold text-emerald-400 uppercase tracking-wider">
+                    <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                    Solana Devnet Active
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <!-- Hero Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Left: Actions & Form -->
+            <div class="lg:col-span-4 space-y-6">
+                <div class="glass p-8 rounded-3xl relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+                            <i data-lucide="file-plus" class="text-sky-400"></i> Provision Insurance Proof
+                        </h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-[10px] font-extrabold uppercase text-slate-500 mb-2 block tracking-widest">Policy Holder Name</label>
+                                <input type="text" id="holder" placeholder="e.g. Satoshi Nakamoto" class="w-full bg-slate-900/50 border border-white/5 rounded-xl px-4 py-3 focus:border-sky-500/50 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-extrabold uppercase text-slate-500 mb-2 block tracking-widest">Policy Coverage Details</label>
+                                <textarea id="policyText" rows="4" placeholder="Describe the policy terms..." class="w-full bg-slate-900/50 border border-white/5 rounded-xl px-4 py-3 focus:border-sky-500/50 outline-none transition-all resize-none"></textarea>
+                            </div>
+                            <button onclick="uploadPolicy()" id="upload-btn" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-900 font-bold py-4 rounded-xl transition-all button-glow flex items-center justify-center gap-2 group">
+                                <span id="btn-text">Log Immutable Proof</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Aesthetic Gradient -->
+                    <div class="absolute -right-16 -top-16 w-32 h-32 bg-sky-500/10 blur-3xl rounded-full"></div>
+                </div>
+
+                <div class="glass p-6 rounded-3xl border-sky-500/20 bg-sky-500/5">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-sky-500/20 rounded-2xl">
+                            <i data-lucide="brain-circuit" class="text-sky-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold">Presage AI Active</h3>
+                            <p class="text-xs text-slate-400">Risk Assessment Engine 1.25.0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Activity Feed -->
+            <div class="lg:col-span-8 flex flex-col gap-6">
+                <!-- Stats Overview -->
+                <div class="grid grid-cols-3 gap-4 font-outfit">
+                    <div class="glass p-6 rounded-3xl text-center">
+                        <span class="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Policies</span>
+                        <div id="stat-policies" class="text-3xl font-bold text-sky-400 mt-1">0</div>
+                    </div>
+                    <div class="glass p-6 rounded-3xl text-center">
+                        <span class="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Claims</span>
+                        <div id="stat-claims" class="text-3xl font-bold text-purple-400 mt-1">0</div>
+                    </div>
+                    <div class="glass p-6 rounded-3xl text-center">
+                        <span class="text-slate-500 text-[10px] font-bold uppercase tracking-widest">Gaps</span>
+                        <div id="stat-gaps" class="text-3xl font-bold text-emerald-400 mt-1">0</div>
+                    </div>
+                </div>
+
+                <!-- Ledger Activity -->
+                <div class="glass rounded-3xl flex-grow overflow-hidden flex flex-col">
+                    <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
+                        <h2 class="text-lg font-bold flex items-center gap-3">
+                            <i data-lucide="database" class="text-sky-400"></i> On-Chain Registry
+                        </h2>
+                        <button onclick="refreshData()" class="p-2 hover:bg-white/5 rounded-lg transition-all">
+                            <i data-lucide="refresh-cw" class="w-4 h-4 text-slate-400"></i>
+                        </button>
+                    </div>
+                    <div id="data-container" class="p-6 overflow-y-auto max-h-[600px] flex-grow space-y-4">
+                        <!-- Items inject here -->
+                        <div class="flex flex-col items-center justify-center py-24 opacity-20 capitalize">
+                           <i data-lucide="layers" class="w-16 h-16 mb-4"></i>
+                           <p>Architecting The Trust Layer...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="max-w-7xl mx-auto px-6 py-12 text-center text-slate-500 border-t border-white/5">
+        <p class="text-xs uppercase tracking-[0.2em]">ClaimGuard AI • Powered by Solana & Algorand • Hackathon 2024</p>
+    </footer>
+
+    <script>
+        async function refreshData() {
+            try {
+                const response = await fetch('/data');
+                const data = await response.json();
+                
+                document.getElementById('stat-policies').textContent = data.policies.length;
+                document.getElementById('stat-claims').textContent = data.claims.length;
+                document.getElementById('stat-gaps').textContent = data.gaps.length;
+
+                const container = document.getElementById('data-container');
+                if (data.policies.length === 0) {
+                    container.innerHTML = `
+                        <div class="flex flex-col items-center justify-center py-24 opacity-20">
+                           <i data-lucide="layers" class="w-16 h-16 mb-4"></i>
+                           <p>Waiting for first policy upload...</p>
+                        </div>
+                    `;
+                    lucide.createIcons();
+                    return;
+                }
+
+                const allItems = [
+                    ...data.policies.map(p => ({...p, type: 'POLICY'})),
+                    ...data.claims.map(c => ({...c, type: 'CLAIM', text: c.claimDetails})),
+                    ...data.gaps.map(g => ({...g, type: 'GAP', text: g.gapType + ' (' + g.severity + ')'}))
+                ].sort((a, b) => new Date(b.createdAt || b.verifiedAt) - new Date(a.createdAt || b.verifiedAt));
+
+                container.innerHTML = allItems.map(item => renderItem(item)).join('');
+                lucide.createIcons();
+            } catch (err) {
+                console.error("Ledger sync error:", err);
+            }
+        }
+
+        function renderItem(item) {
+            const date = new Date(item.createdAt || item.verifiedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const typeConfig = {
+                POLICY: { icon: 'file-text', color: 'sky', label: 'Policy Proof' },
+                CLAIM: { icon: 'clipboard-list', color: 'purple', label: 'Claim Filed' },
+                GAP: { icon: 'alert-triangle', color: 'emerald', label: 'Gap Audit' }
+            }[item.type];
+
+            return `
+                <div class="glass bg-white/[0.02] p-6 rounded-2xl border border-white/5 hover:border-sky-500/30 transition-all group">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center gap-4">
+                            <div class="p-3 bg-${typeConfig.color}-500/10 rounded-xl border border-${typeConfig.color}-500/20">
+                                <i data-lucide="${typeConfig.icon}" class="text-${typeConfig.color}-400 w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold flex items-center gap-2">
+                                    ${item.holder || 'System Entry'}
+                                    <span class="text-[9px] uppercase font-bold tracking-widest px-2 py-0.5 rounded bg-${typeConfig.color}-500/10 text-${typeConfig.color}-400">
+                                        ${typeConfig.label}
+                                    </span>
+                                </h4>
+                                <p class="text-xs text-slate-500 font-medium">Record ID: ${item.id.split('-')[0]} • ${date}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="mt-4 text-sm text-slate-300 leading-relaxed">${item.policyText || item.text || 'Validating schema...'}</p>
+
+                    ${item.predictions ? `
+                        <div class="mt-4 flex gap-4 p-3 bg-black/40 rounded-xl border border-white/5">
+                            <div class="flex items-center gap-2">
+                                <span class="text-[9px] text-slate-500 uppercase font-bold tracking-widest">Decision:</span>
+                                <span class="text-xs font-bold text-sky-400 underline decoration-sky-400/30">${item.predictions.decision}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[9px] text-slate-500 uppercase font-bold tracking-widest">Risk Score:</span>
+                                <span class="text-xs font-bold text-emerald-400 underline decoration-emerald-400/30">${item.predictions.riskScore}</span>
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <div class="mt-6 pt-4 border-t border-white/5 flex justify-between items-center">
+                        <a href="https://explorer.solana.com/tx/${item.solanaTxSignature}?cluster=devnet" target="_blank" class="flex items-center gap-2 text-sky-500 text-[10px] font-bold uppercase tracking-widest hover:text-sky-400 transition-colors">
+                            <i data-lucide="link-2" class="w-3 h-3"></i> Verify On Solana
+                        </a>
+                        ${item.type === 'POLICY' ? `
+                            <div class="flex gap-2">
+                                <button onclick="processClaim('${item.id}')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-[10px] font-extrabold uppercase transition-all tracking-wider border border-white/5">File Claim</button>
+                                <button onclick="verifyGap('${item.id}')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-[10px] font-extrabold uppercase transition-all tracking-wider border border-white/5">Audit Gaps</button>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Action Handlers
+        async function uploadPolicy() {
+            const holder = document.getElementById('holder').value;
+            const policyText = document.getElementById('policyText').value;
+            const btn = document.getElementById('upload-btn');
+            const btnText = document.getElementById('btn-text');
+
+            if (!holder || !policyText) return alert("Please specify holder and terms.");
+
+            btn.disabled = true;
+            btnText.textContent = 'Architecting Reality...';
+
+            try {
+                const res = await fetch('/upload-policy', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ holder, policyText })
+                });
+                await res.json();
+                document.getElementById('holder').value = '';
+                document.getElementById('policyText').value = '';
+                refreshData();
+            } catch (err) {
+                alert("Blockchain connection failed.");
+            } finally {
+                btn.disabled = false;
+                btnText.textContent = 'Log Immutable Proof';
+            }
+        }
+
+        async function processClaim(policyId) {
+            const details = prompt("Enter claim details (e.g. Broken Arm Recovery):");
+            if (!details) return;
+
+            try {
+                await fetch('/process-claim', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ policyId, claimDetails: details })
+                });
+                refreshData();
+            } catch (err) {
+                alert("Claim submission failed.");
+            }
+        }
+
+        async function verifyGap(policyId) {
+            const gapType = prompt("Enter audit gap description (e.g. Missing Storm Surge Rider):");
+            if (!gapType) return;
+
+            try {
+                await fetch('/verify-gap', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ policyId, gapType, severity: 'High' })
+                });
+                refreshData();
+            } catch (err) {
+                alert("Gap audit failed.");
+            }
+        }
+
+        // Initializer
+        lucide.createIcons();
+        refreshData();
+        setInterval(refreshData, 5000);
+    </script>
+</body>
+</html>

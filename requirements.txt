@@ -1,0 +1,25 @@
+# ClaimGuard AI - Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# FastAPI and Server
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+python-dotenv>=1.0.0
+
+# HTTP and API
+requests>=2.31.0
+httpx>=0.25.0
+
+# OCR and Document Processing
+pdf2image>=1.16.3
+PyPDF2>=3.0.0
+Pillow>=10.0.0
+
+# Data Processing
+pydantic>=2.5.0
+
+# Utilities
+base58>=2.1.1
+hashlib
+asyncio

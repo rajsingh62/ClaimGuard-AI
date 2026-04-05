@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ClaimGuard AI | Immutable Insurance Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-secondary-fixed": "#23005c",
+                "on-tertiary-fixed-variant": "#004e5c",
+                "on-surface-variant": "#c1c6d7",
+                "primary-container": "#0070f3",
+                "primary": "#aec6ff",
+                "tertiary": "#4cd7f6",
+                "surface": "#131315",
+                "surface-dim": "#131315",
+                "on-tertiary-container": "#fdfeff",
+                "primary-fixed": "#d8e2ff",
+                "secondary-fixed": "#e9ddff",
+                "tertiary-fixed-dim": "#4cd7f6",
+                "on-primary-container": "#ffffff",
+                "outline": "#8b90a0",
+                "on-secondary-container": "#c4abff",
+                "surface-container-high": "#2a2a2c",
+                "secondary": "#d0bcff",
+                "on-secondary": "#3c0091",
+                "tertiary-fixed": "#acedff",
+                "surface-container": "#201f21",
+                "outline-variant": "#414754",
+                "on-primary-fixed-variant": "#004397",
+                "primary-fixed-dim": "#aec6ff",
+                "surface-tint": "#aec6ff",
+                "on-secondary-fixed-variant": "#5516be",
+                "secondary-container": "#571bc1",
+                "on-background": "#e5e1e4",
+                "surface-variant": "#353437",
+                "error-container": "#93000a",
+                "secondary-fixed-dim": "#d0bcff",
+                "on-tertiary-fixed": "#001f26",
+                "surface-container-highest": "#353437",
+                "on-primary": "#002e6b",
+                "inverse-surface": "#e5e1e4",
+                "on-tertiary": "#003640",
+                "on-error": "#690005",
+                "surface-container-low": "#1c1b1d",
+                "error": "#ffb4ab",
+                "surface-container-lowest": "#0e0e10",
+                "background": "#131315",
+                "on-surface": "#e5e1e4",
+                "surface-bright": "#39393b",
+                "on-error-container": "#ffdad6",
+                "on-primary-fixed": "#001a43",
+                "inverse-primary": "#0059c5",
+                "tertiary-container": "#008197",
+                "inverse-on-surface": "#313032"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "fontFamily": {
+                "headline": ["Space Grotesk"],
+                "body": ["Inter"],
+                "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #131315; color: #e5e1e4; font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(32, 31, 33, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(174, 198, 255, 0.15);
+        }
+        .text-glow {
+            text-shadow: 0 0 12px rgba(0, 112, 243, 0.5);
+        }
+        .hero-glow-purple {
+            background: radial-gradient(circle at bottom right, rgba(208, 188, 255, 0.08) 0%, transparent 60%);
+        }
+        .hero-glow-blue {
+            background: radial-gradient(circle at top left, rgba(0, 112, 243, 0.1) 0%, transparent 50%);
+        }
+        .grid-pattern {
+            background-image: radial-gradient(circle, rgba(139, 144, 160, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        /* Animated geometric visualization */
+        .geo-ring {
+            position: absolute;
+            border: 1px solid rgba(0, 112, 243, 0.3);
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+        }
+        .geo-ring:nth-child(2) { animation-duration: 15s; animation-direction: reverse; }
+        .geo-ring:nth-child(3) { animation-duration: 25s; }
+        .geo-ring:nth-child(4) { animation-duration: 30s; animation-direction: reverse; }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+        
+        /* Logo animation */
+        .logo-shield {
+            filter: drop-shadow(0 0 20px rgba(0, 112, 243, 0.4));
+        }
+        
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(76, 215, 246, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0.4; }
+            50% { transform: translateY(-20px) translateX(10px); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body class="bg-surface overflow-x-hidden selection:bg-primary-container selection:text-white">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-8 py-3 bg-[#131315]/60 backdrop-blur-xl rounded-full mt-6 mx-auto max-w-5xl border border-white/10 shadow-[0_10px_40px_-10px_rgba(0,112,243,0.15)]">
+<div class="flex items-center gap-8">
+<!-- Logo -->
+<div class="flex items-center gap-3">
+    <svg class="w-8 h-8 logo-shield" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Shield shape -->
+        <path d="M24 4L6 12V22C6 33.05 14.12 42.78 24 46C33.88 42.78 42 33.05 42 22V12L24 4Z" 
+              stroke="url(#shieldGradient)" stroke-width="2" fill="none"/>
+        <!-- Inner checkmark -->
+        <path d="M16 24L21 29L32 18" stroke="url(#checkGradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <!-- Decorative circuit lines -->
+        <path d="M24 4V14M24 34V46" stroke="#4cd7f6" stroke-width="1" stroke-opacity="0.5"/>
+        <circle cx="24" cy="24" r="4" stroke="#0070f3" stroke-width="1" fill="none"/>
+        <defs>
+            <linearGradient id="shieldGradient" x1="6" y1="4" x2="42" y2="46" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#0070f3"/>
+                <stop offset="1" stop-color="#4cd7f6"/>
+            </linearGradient>
+            <linearGradient id="checkGradient" x1="16" y1="18" x2="32" y2="29" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#4cd7f6"/>
+                <stop offset="1" stop-color="#aec6ff"/>
+            </linearGradient>
+        </defs>
+    </svg>
+    <span class="text-xl font-bold tracking-[0.15em] text-white drop-shadow-[0_0_8px_rgba(0,112,243,0.4)] font-headline">CG<span class="text-primary">.</span>AI</span>
+</div>
+<div class="hidden md:flex items-center gap-6 font-headline tracking-tight text-sm">
+<a class="text-[#0070f3] border-b border-[#0070f3] pb-1 hover:scale-105 transition-transform duration-300" href="/lab">Engine</a>
+<a class="text-[#c1c6d7] hover:text-white transition-colors hover:scale-105 transition-transform duration-300" href="/results">Telemetry</a>
+<a class="text-[#c1c6d7] hover:text-white transition-colors hover:scale-105 transition-transform duration-300" href="/compare">Compare</a>
+<a class="text-[#c1c6d7] hover:text-white transition-colors hover:scale-105 transition-transform duration-300" href="/">Security</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button onclick="showToast('System secure. Zero network intrusions detected.', 'info')" class="material-symbols-outlined text-[#c1c6d7] hover:text-[#0070f3] transition-colors">notifications_active</button>
+<button id="connect-node-btn" class="bg-primary-container text-white px-6 py-2 rounded-full font-headline font-bold text-xs uppercase tracking-widest hover:scale-105 transition-transform duration-300 active:scale-95 duration-200">Connect Node</button>
+</div>
+</nav>
+
+<!-- Hero Experience -->
+<main class="relative min-h-screen flex flex-col items-center justify-center pt-24 px-6 overflow-hidden">
+<!-- Background Effects -->
+<div class="absolute inset-0 grid-pattern pointer-events-none opacity-40"></div>
+<div class="absolute inset-0 hero-glow-blue pointer-events-none"></div>
+<div class="absolute inset-0 hero-glow-purple pointer-events-none"></div>
+
+<!-- Central Visualization - Geometric Rings -->
+<div class="relative w-full max-w-4xl flex flex-col items-center justify-center z-10 text-center">
+<div class="relative mb-12">
+<div class="absolute inset-0 bg-primary/20 blur-[100px] rounded-full scale-150 pulse-glow"></div>
+
+<!-- Geometric Ring Visualization -->
+<div class="relative w-72 h-72 md:w-[420px] md:h-[420px] flex items-center justify-center">
+    <!-- Outer ring -->
+    <div class="geo-ring w-full h-full border-primary/30"></div>
+    <!-- Second ring -->
+    <div class="geo-ring w-[85%] h-[85%] border-tertiary/20" style="border-style: dashed;"></div>
+    <!-- Third ring -->
+    <div class="geo-ring w-[70%] h-[70%] border-secondary/25"></div>
+    <!-- Fourth ring -->
+    <div class="geo-ring w-[55%] h-[55%] border-primary/40"></div>
+    
+    <!-- Center hexagon -->
+    <div class="absolute w-24 h-24 md:w-32 md:h-32 flex items-center justify-center">
+        <svg class="w-full h-full animate-[spin_60s_linear_infinite]" viewBox="0 0 100 100">
+            <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" 
+                     fill="none" stroke="url(#hexGradient)" stroke-width="1.5"/>
+            <polygon points="50,15 85,32.5 85,67.5 50,85 15,67.5 15,32.5" 
+                     fill="rgba(0,112,243,0.1)" stroke="#4cd7f6" stroke-width="1"/>
+            <defs>
+                <linearGradient id="hexGradient" x1="5" y1="5" x2="95" y2="95">
+                    <stop stop-color="#0070f3"/>
+                    <stop offset="1" stop-color="#4cd7f6"/>
+                </linearGradient>
+            </defs>
+        </svg>
+        <!-- Center icon -->
+        <div class="absolute inset-0 flex items-center justify-center">
+            <span class="material-symbols-outlined text-4xl md:text-5xl text-primary drop-shadow-[0_0_15px_rgba(0,112,243,0.6)]">verified_user</span>
+        </div>
+    </div>
+    
+    <!-- Floating particles -->
+    <div class="particle" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+    <div class="particle" style="top: 20%; right: 15%; animation-delay: 1s;"></div>
+    <div class="particle" style="bottom: 15%; left: 25%; animation-delay: 2s;"></div>
+    <div class="particle" style="bottom: 25%; right: 20%; animation-delay: 3s;"></div>
+    <div class="particle" style="top: 50%; left: 10%; animation-delay: 1.5s;"></div>
+    <div class="particle" style="top: 40%; right: 10%; animation-delay: 2.5s;"></div>
+</div>
+
+<!-- Asymmetric Technical Overlays -->
+<div class="absolute -top-10 -right-24 hidden lg:block p-4 glass-card rounded-xl">
+<div class="font-label text-[10px] text-tertiary mb-1 uppercase tracking-widest">Blockchain Status</div>
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-tertiary shadow-[0_0_8px_#4cd7f6] animate-pulse"></div>
+<span class="font-body text-xs text-on-surface-variant font-medium">SOLANA VERIFIED</span>
+</div>
+</div>
+<div class="absolute -bottom-10 -left-24 hidden lg:block p-4 glass-card rounded-xl">
+<div class="font-label text-[10px] text-primary mb-1 uppercase tracking-widest">AI Risk Engine</div>
+<div class="font-headline text-lg font-bold text-white">99.9% ACCURACY</div>
+</div>
+<div class="absolute top-1/2 -right-32 hidden xl:block p-4 glass-card rounded-xl">
+<div class="font-label text-[10px] text-secondary mb-1 uppercase tracking-widest">Immutable Proofs</div>
+<div class="font-headline text-sm font-bold text-white">ON-CHAIN</div>
+</div>
+</div>
+</div>
+
+<!-- Content -->
+<div class="max-w-3xl space-y-8">
+<div class="space-y-4">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-outline-variant/30 bg-surface-container-lowest/50">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-pulse"></span>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant">Immutable Intelligence v4.0</span>
+</div>
+<h1 class="text-5xl md:text-7xl font-headline font-bold text-white tracking-tight leading-[0.95] text-glow">
+                    Know What Insurance <br/>
+<span class="text-primary-container">Won't Tell You</span>
+</h1>
+</div>
+<p class="text-lg md:text-xl font-body text-on-surface-variant leading-relaxed max-w-2xl mx-auto">
+                The first blockchain-verified AI engine that decrypts insurance policies, predicts your risk, and creates immutable proof of every AI decision.
+            </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
+<button onclick="window.location.href='/lab'" class="group relative px-10 py-5 glass-card rounded-full font-headline font-bold text-lg text-white transition-all hover:shadow-[0_0_30px_rgba(0,112,243,0.4)] active:scale-95 overflow-hidden">
+<div class="absolute inset-0 bg-primary-container/20 group-hover:bg-primary-container/30 transition-colors"></div>
+<div class="relative flex items-center gap-3">
+                            Analyze My Policy
+                            <span class="material-symbols-outlined font-bold transition-transform group-hover:translate-x-1">arrow_forward</span>
+</div>
+</button>
+<button onclick="window.location.href='/lab'" class="font-label text-xs uppercase tracking-[0.2em] text-outline hover:text-white transition-colors flex items-center gap-2">
+                        Start Analysis
+                        <span class="material-symbols-outlined text-sm">open_in_new</span>
+</button>
+</div>
+</div>
+</div>
+
+<!-- Metric Stream (Bottom of Hero) -->
+<div class="mt-24 w-full max-w-6xl grid grid-cols-2 md:grid-cols-4 gap-4 px-4 z-10 pb-12">
+<div class="glass-card p-6 rounded-xl space-y-2">
+<div class="font-label text-[10px] text-outline uppercase tracking-widest">Policies Scanned</div>
+<div class="font-headline text-2xl font-bold text-white">4.2M+</div>
+</div>
+<div class="glass-card p-6 rounded-xl space-y-2">
+<div class="font-label text-[10px] text-outline uppercase tracking-widest">Total Savings</div>
+<div class="font-headline text-2xl font-bold text-white">$1.8B</div>
+</div>
+<div class="glass-card p-6 rounded-xl space-y-2">
+<div class="font-label text-[10px] text-outline uppercase tracking-widest">Blockchain Proofs</div>
+<div class="font-headline text-2xl font-bold text-tertiary">128K+</div>
+</div>
+<div class="glass-card p-6 rounded-xl space-y-2">
+<div class="font-label text-[10px] text-outline uppercase tracking-widest">Response Latency</div>
+<div class="font-headline text-2xl font-bold text-primary">14ms</div>
+</div>
+</div>
+</main>
+
+<!-- Bento Section Example -->
+<section class="w-full max-w-7xl mx-auto py-24 px-6 relative">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-[800px] md:h-[600px]">
+<div class="md:col-span-8 glass-card rounded-xl overflow-hidden relative group">
+<div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity">
+<img class="w-full h-full object-cover" data-alt="Detailed tactical UI with complex data charts, financial risk heatmaps, and digital scan lines in deep blue tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBjdSoa8NTYmszOsi1PQrjz9X34LJq6pWCsqNl8SD-9OmKfCzAIDs_yYTTjvO23K5czdfng3Rw7CzTsxnt2n7dlu20UIL6mKPB02R_EW_J-3REp2QQ-mkux9LUF2jic_gytKZo5eM6Adelera1hVDTjXm-vGieQhqqbjwuRi7jiSH3LU7BvdahAu-haTtqK-nwVcE1lSVNEcFbmF9TJXcVD1EOoTnkOalwgChMFtHNWYICqbDFobFVGHWEF9Ck3GePU3QecvDj27E"/>
+</div>
+<div class="relative h-full p-10 flex flex-col justify-end bg-gradient-to-t from-surface to-transparent">
+<h3 class="font-headline text-3xl font-bold text-white mb-2">Deep Policy Decryption</h3>
+<p class="font-body text-on-surface-variant max-w-md">Our neural engine scans legal fine print to find hidden clauses and coverage gaps that human adjusters miss. Every analysis is recorded on Solana blockchain.</p>
+</div>
+</div>
+<div class="md:col-span-4 glass-card rounded-xl p-8 flex flex-col justify-between border-tertiary/20">
+<div class="space-y-4">
+<span class="material-symbols-outlined text-4xl text-tertiary" style="font-variation-settings: 'FILL' 1;">security</span>
+<h3 class="font-headline text-2xl font-bold text-white">Immutable Proof</h3>
+<p class="font-body text-sm text-on-surface-variant">Every AI decision is hashed and stored on Solana blockchain. Tamper-proof audit trail for disputes.</p>
+</div>
+<div class="pt-8 border-t border-outline-variant/30">
+<button onclick="window.location.href='/lab'" class="text-tertiary font-label text-[10px] uppercase tracking-widest flex items-center gap-2 group">
+                        Verify on Chain <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="md:col-span-4 glass-card rounded-xl p-8 bg-primary-container/10">
+<h4 class="font-headline text-lg font-bold text-white mb-4">Neural Feedback</h4>
+<div class="space-y-4">
+<div class="h-1 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[75%] shadow-[0_0_10px_#0070f3]"></div>
+</div>
+<div class="flex justify-between font-label text-[10px] text-outline">
+<span>SCANNING_NODE_01</span>
+<span>75% COMPLETE</span>
+</div>
+</div>
+</div>
+<div class="md:col-span-8 glass-card rounded-xl p-8 flex items-center justify-between">
+<div>
+<h4 class="font-headline text-xl font-bold text-white">Risk Matrix Integration</h4>
+<p class="font-body text-sm text-on-surface-variant">Live telemetry from global insurance markets with blockchain verification.</p>
+</div>
+<div class="flex -space-x-4">
+<div class="w-12 h-12 rounded-full border-2 border-surface bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">cloud</span>
+</div>
+<div class="w-12 h-12 rounded-full border-2 border-surface bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">monitoring</span>
+</div>
+<div class="w-12 h-12 rounded-full border-2 border-surface bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">hub</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer class="w-full py-12 px-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-[#131315] border-t border-white/5">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+    <svg class="w-6 h-6" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 4L6 12V22C6 33.05 14.12 42.78 24 46C33.88 42.78 42 33.05 42 22V12L24 4Z" stroke="#0070f3" stroke-width="1.5" fill="none"/>
+        <path d="M16 24L21 29L32 18" stroke="#4cd7f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <span class="font-headline font-bold text-white text-lg tracking-[0.15em]">CG<span class="text-primary">.</span>AI</span>
+</div>
+<p class="font-manrope uppercase tracking-[0.15em] text-[10px] text-[#8b90a0]">© 2024 ClaimGuard AI. Immutable Insurance Intelligence.</p>
+</div>
+<div class="flex flex-wrap gap-8 md:justify-end">
+<a class="font-manrope uppercase tracking-[0.15em] text-[10px] text-[#8b90a0] hover:text-[#0070f3] transition-all" href="/">Protocol</a>
+<a class="font-manrope uppercase tracking-[0.15em] text-[10px] text-[#8b90a0] hover:text-[#0070f3] transition-all" href="/lab">Neural Link</a>
+<a class="font-manrope uppercase tracking-[0.15em] text-[10px] text-[#8b90a0] hover:text-[#0070f3] transition-all" href="/lab">Analyze</a>
+<a class="font-manrope uppercase tracking-[0.15em] text-[10px] text-[#8b90a0] hover:text-[#0070f3] transition-all" href="/">Privacy</a>
+</div>
+</footer>
+
+<div id="toast-container" class="fixed bottom-6 right-6 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
+
+<script>
+function showToast(message, type = 'info', duration = 4000) {
+    const container = document.getElementById('toast-container');
+    const icons = { success: 'check_circle', error: 'error', info: 'info' };
+    const colors = { success: '#34d399', error: '#ff4d4d', info: '#4cd7f6' };
+    
+    const toast = document.createElement('div');
+    toast.className = `flex items-center gap-3 bg-[#201f21]/95 border border-[#aec6ff]/10 backdrop-blur-md rounded-xl py-3 px-4 shadow-xl pointer-events-auto transition-transform duration-300 ease-out translate-y-5 opacity-0`;
+    toast.innerHTML = `
+        <span class="material-symbols-outlined" style="color:${colors[type]};font-variation-settings:'FILL' 1;font-size:18px">${icons[type]}</span>
+        <span class="font-label text-sm text-[#e5e1e4] leading-snug">${message}</span>
+    `;
+    
+    container.appendChild(toast);
+    
+    // Animate in
+    requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-5', 'opacity-0');
+    });
+    
+    // Animate out
+    setTimeout(() => {
+        toast.classList.add('translate-y-5', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+    }, duration);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const connectNodeBtn = document.getElementById('connect-node-btn');
+    if (connectNodeBtn) {
+        if (localStorage.getItem('kaggle_node')) connectNodeBtn.classList.add('ring-2', 'ring-tertiary');
+        
+        connectNodeBtn.addEventListener('click', () => {
+            const current = localStorage.getItem('kaggle_node');
+            const url = prompt('Enter Kaggle Node API URL (leave blank to disconnect):', current || '');
+            if (url === null) return;
+            
+            if (url.trim()) {
+                localStorage.setItem('kaggle_node', url.trim().replace(/\/$/, ''));
+                connectNodeBtn.classList.add('ring-2', 'ring-tertiary');
+                showToast('Node Connected successfully!', 'success');
+            } else {
+                localStorage.removeItem('kaggle_node');
+                connectNodeBtn.classList.remove('ring-2', 'ring-tertiary');
+                showToast('Node disconnected. Using local backend.', 'info');
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>

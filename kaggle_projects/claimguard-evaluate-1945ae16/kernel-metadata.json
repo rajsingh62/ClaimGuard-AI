@@ -1,0 +1,13 @@
+{
+  "id": "unknowbruh/claimguard-evaluate-1945ae16",
+  "title": "ClaimGuard Evaluate 1945ae16",
+  "code_file": "script.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}

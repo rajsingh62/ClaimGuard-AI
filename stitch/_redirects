@@ -1,0 +1,8 @@
+# Netlify Redirects — Map URL paths to the correct HTML files
+# These match the routes that FastAPI was handling locally
+
+/          /hero_experience/code.html    200
+/lab       /analysis_lab/code.html       200
+/results   /results_dashboard/code.html  200
+/compare   /policy_comparison/code.html  200
+/smart-compare  /policy_comparison/code.html  200

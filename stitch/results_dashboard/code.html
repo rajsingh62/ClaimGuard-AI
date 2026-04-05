@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ClaimGuard AI | Claim Analysis Results</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#c1c6d7",
+                    "primary-container": "#0070f3",
+                    "primary": "#aec6ff",
+                    "tertiary": "#4cd7f6",
+                    "surface": "#131315",
+                    "surface-dim": "#131315",
+                    "outline": "#8b90a0",
+                    "surface-container-high": "#2a2a2c",
+                    "surface-container": "#201f21",
+                    "outline-variant": "#414754",
+                    "surface-container-highest": "#353437",
+                    "surface-container-low": "#1c1b1d",
+                    "surface-container-lowest": "#0e0e10",
+                    "background": "#131315",
+                    "on-surface": "#e5e1e4",
+                    "surface-bright": "#39393b",
+                    "error-container": "#93000a",
+                    "error": "#ffb4ab",
+                    "on-primary-container": "#ffffff"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Inter"],
+                    "label": ["Manrope"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #131315; }
+        .glass-panel {
+            background: rgba(32, 31, 33, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(174, 198, 255, 0.1);
+        }
+        .risk-gauge { transition: stroke-dashoffset 2s ease-out; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .fade-in { animation: fadeIn 0.6s ease-out forwards; opacity: 0; }
+        @keyframes fadeIn { to { opacity: 1; } }
+        .slide-up { animation: slideUp 0.5s ease-out forwards; opacity: 0; transform: translateY(20px); }
+        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* Toast notifications */
+        #toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; pointer-events: none; }
+        .toast {
+            display: flex; align-items: center; gap: 12px;
+            background: rgba(32, 31, 33, 0.95); backdrop-filter: blur(20px);
+            border: 1px solid rgba(174, 198, 255, 0.15);
+            border-radius: 12px; padding: 14px 18px;
+            font-family: 'Manrope', sans-serif; font-size: 13px; color: #e5e1e4;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            animation: toastIn 0.35s ease-out forwards;
+            pointer-events: all; min-width: 280px;
+        }
+        .toast.success { border-left: 3px solid #34d399; }
+        .toast.error   { border-left: 3px solid #ff4d4d; }
+        .toast.info    { border-left: 3px solid #4cd7f6; }
+        @keyframes toastIn  { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+        @keyframes toastOut { from { opacity:1; } to { opacity:0; transform: translateY(20px); } }
+        .toast.hide { animation: toastOut 0.3s ease-out forwards; }
+
+        /* Node status indicator */
+        .node-connected { box-shadow: 0 0 0 2px #4cd7f6; }
+    </style>
+</head>
+<body class="font-body text-on-surface selection:bg-primary-container selection:text-white">
+
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-8 py-3 rounded-full mt-6 mx-auto max-w-5xl border border-white/10 bg-[#131315]/60 backdrop-blur-xl shadow-[0_10px_40px_-10px_rgba(0,112,243,0.15)]">
+    <div class="text-xl font-bold tracking-[0.2em] text-white drop-shadow-[0_0_8px_rgba(0,112,243,0.4)] font-headline">CLAIMGUARD AI</div>
+    <div class="hidden md:flex items-center gap-8">
+        <a class="text-[#c1c6d7] hover:text-white transition-colors font-headline tracking-tight text-sm" href="/lab">Engine</a>
+        <a class="text-[#0070f3] border-b border-[#0070f3] pb-1 font-headline tracking-tight text-sm" href="/results">Telemetry</a>
+        <a class="text-[#c1c6d7] hover:text-white transition-colors font-headline tracking-tight text-sm" href="/compare">Compare</a>
+        <a class="text-[#c1c6d7] hover:text-white transition-colors font-headline tracking-tight text-sm" href="/">Security</a>
+    </div>
+    <div class="flex items-center gap-6">
+        <button id="connect-node-btn" onclick="cgConnectNode()" class="bg-primary-container text-white px-5 py-2 rounded-md font-label text-[10px] uppercase tracking-widest hover:scale-105 transition-transform active:scale-95 duration-200">
+            Connect Node
+        </button>
+    </div>
+</nav>
+
+<!-- No Data Placeholder -->
+<div id="no-data-view" class="hidden pt-48 pb-24 px-6 max-w-xl mx-auto text-center">
+    <span class="material-symbols-outlined text-6xl text-outline mb-6 block" style="font-variation-settings: 'FILL' 1;">cloud_off</span>
+    <h1 class="font-headline text-3xl font-bold text-white mb-4">No Analysis Data Found</h1>
+    <p class="text-on-surface-variant mb-8">Upload a Policy document and Repair Bill in the Analysis Lab to generate results.</p>
+    <a href="/lab" class="inline-flex items-center gap-2 bg-primary-container text-white px-8 py-3 rounded-lg font-bold hover:scale-105 transition-transform">
+        <span class="material-symbols-outlined">science</span> Go to Analysis Lab
+    </a>
+</div>
+
+<main id="results-main" class="pt-32 pb-24 px-6 md:px-12 max-w-[1400px] mx-auto">
+    <!-- Dashboard Header -->
+    <header class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 fade-in">
+        <div class="space-y-2">
+            <div class="font-label text-tertiary text-xs tracking-[0.2em] uppercase">Claim Analysis Complete</div>
+            <h1 class="font-headline text-5xl md:text-6xl font-bold tracking-tighter text-white">Results Dashboard</h1>
+        </div>
+        <div class="flex gap-4">
+            <button onclick="window.print()" class="flex items-center gap-2 px-6 py-3 bg-primary-container text-white rounded-lg font-label text-xs tracking-widest uppercase shadow-[0_0_20px_rgba(0,112,243,0.4)] hover:scale-105 transition-transform active:scale-95">
+                <span class="material-symbols-outlined text-sm">file_download</span> Download Report
+            </button>
+        </div>
+    </header>
+
+    <!-- === TOP ROW: Big Numbers === -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+        <!-- Total Bill -->
+        <div class="glass-panel p-6 rounded-xl slide-up" style="animation-delay:0.1s">
+            <div class="flex items-center gap-2 mb-3">
+                <span class="material-symbols-outlined text-primary text-sm">receipt_long</span>
+                <div class="font-label text-[9px] uppercase tracking-widest text-outline">Total Bill Amount</div>
+            </div>
+            <div id="stat-total-bill" class="font-headline text-3xl font-bold text-white">$0</div>
+        </div>
+        <!-- Covered -->
+        <div class="glass-panel p-6 rounded-xl border-l-2 border-l-emerald-400 slide-up" style="animation-delay:0.2s">
+            <div class="flex items-center gap-2 mb-3">
+                <span class="material-symbols-outlined text-emerald-400 text-sm" style="font-variation-settings:'FILL' 1;">check_circle</span>
+                <div class="font-label text-[9px] uppercase tracking-widest text-outline">Insurance Pays</div>
+            </div>
+            <div id="stat-covered" class="font-headline text-3xl font-bold text-emerald-400">$0</div>
+        </div>
+        <!-- Not Covered -->
+        <div class="glass-panel p-6 rounded-xl border-l-2 border-l-[#ff4d4d] slide-up" style="animation-delay:0.3s">
+            <div class="flex items-center gap-2 mb-3">
+                <span class="material-symbols-outlined text-[#ff4d4d] text-sm" style="font-variation-settings:'FILL' 1;">cancel</span>
+                <div class="font-label text-[9px] uppercase tracking-widest text-outline">You Must Pay</div>
+            </div>
+            <div id="stat-not-covered" class="font-headline text-3xl font-bold text-[#ff4d4d]">$0</div>
+        </div>
+        <!-- Risk Score -->
+        <div class="glass-panel p-6 rounded-xl slide-up" style="animation-delay:0.4s">
+            <div class="flex items-center gap-2 mb-3">
+                <span class="material-symbols-outlined text-amber-400 text-sm">speed</span>
+                <div class="font-label text-[9px] uppercase tracking-widest text-outline">Risk Level</div>
+            </div>
+            <div id="stat-risk" class="font-headline text-3xl font-bold text-amber-400">0%</div>
+            <div class="w-full bg-white/5 h-1.5 mt-3 rounded-full overflow-hidden">
+                <div id="risk-bar" class="h-full rounded-full transition-all duration-1000 bg-gradient-to-r from-emerald-400 via-amber-400 to-[#ff4d4d]" style="width:0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- === HUMAN SUMMARY === -->
+    <div id="human-summary-section" class="glass-panel rounded-xl p-6 mb-10 border-l-4 border-l-tertiary hidden slide-up" style="animation-delay:0.5s">
+        <div class="flex items-center gap-2 mb-3">
+            <span class="material-symbols-outlined text-tertiary" style="font-variation-settings:'FILL' 1;">smart_toy</span>
+            <div class="font-label text-xs text-tertiary uppercase tracking-widest">AI Summary</div>
+        </div>
+        <p id="human-summary-text" class="text-white text-base leading-relaxed font-medium"></p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- === LEFT: Risk Gauge + Breakdown Table === -->
+        <div class="lg:col-span-7 space-y-8">
+
+            <!-- Central Gauge -->
+            <section class="glass-panel rounded-xl p-10 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden fade-in" style="animation-delay:0.3s">
+                <div class="font-label text-[#8b90a0] text-[10px] tracking-[0.3em] uppercase mb-8">Coverage Analysis Gauge</div>
+                <div class="relative flex items-center justify-center">
+                    <svg class="w-72 h-72 transform -rotate-90">
+                        <circle class="text-surface-container-highest" cx="144" cy="144" fill="transparent" r="120" stroke="currentColor" stroke-width="8"></circle>
+                        <circle id="gauge-circle" class="text-emerald-400 risk-gauge" cx="144" cy="144" fill="transparent" r="120" stroke="currentColor" stroke-dasharray="753.6" stroke-dashoffset="753.6" stroke-width="12" style="filter: drop-shadow(0 0 10px currentColor);"></circle>
+                    </svg>
+                    <div class="absolute text-center flex flex-col items-center">
+                        <span id="gauge-payable" class="font-headline text-5xl font-bold text-white tracking-tighter">$0</span>
+                        <div class="font-label text-emerald-400 text-xs tracking-widest uppercase mt-2">Insurer Payable</div>
+                        <div class="mt-4 flex items-baseline gap-1">
+                            <span id="gauge-pct" class="font-headline text-2xl font-bold text-tertiary">0</span>
+                            <span class="font-headline text-sm text-tertiary">% covered</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ✅ PAYABLE ITEMS -->
+            <div class="slide-up" style="animation-delay:0.6s">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="material-symbols-outlined text-emerald-400" style="font-variation-settings:'FILL' 1;">check_circle</span>
+                    <h3 class="font-headline font-bold text-white text-xl">Payable Items</h3>
+                    <span id="payable-count" class="bg-emerald-400/20 text-emerald-400 font-label text-[10px] px-2 py-0.5 rounded tracking-wider">0</span>
+                </div>
+                <div id="payable-items-list" class="space-y-3">
+                    <!-- JS populated -->
+                </div>
+            </div>
+
+            <!-- ❌ NON-PAYABLE ITEMS -->
+            <div class="slide-up" style="animation-delay:0.7s">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="material-symbols-outlined text-[#ff4d4d]" style="font-variation-settings:'FILL' 1;">cancel</span>
+                    <h3 class="font-headline font-bold text-white text-xl">Non-Payable Items</h3>
+                    <span id="non-payable-count" class="bg-[#ff4d4d]/20 text-[#ff4d4d] font-label text-[10px] px-2 py-0.5 rounded tracking-wider">0</span>
+                </div>
+                <div id="non-payable-items-list" class="space-y-3">
+                    <!-- JS populated -->
+                </div>
+            </div>
+        </div>
+
+        <!-- === RIGHT: Blockchain + AI Reasoning === -->
+        <aside class="lg:col-span-5 space-y-6">
+
+            <!-- Blockchain Proof Card -->
+            <div id="blockchain-card" class="hidden glass-panel rounded-xl overflow-hidden border-l-2 border-l-tertiary slide-up" style="animation-delay:0.5s">
+                <div class="p-6">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span id="bc-icon" class="material-symbols-outlined text-tertiary" style="font-variation-settings:'FILL' 1;">verified</span>
+                        <div id="bc-label" class="font-label text-[10px] text-tertiary uppercase tracking-widest">On-Chain Proof Recorded</div>
+                    </div>
+                    <h3 class="font-headline text-white font-bold text-lg mb-2">Immutable Proof</h3>
+                    <p id="bc-desc" class="text-on-surface-variant text-sm mb-4">Evaluation hashed and stored on Solana devnet for tamper-proof audit.</p>
+                    <div class="flex flex-col gap-2 text-xs">
+                        <div class="flex justify-between items-center bg-surface-container-low/50 rounded px-3 py-2">
+                            <span class="text-outline">Network:</span>
+                            <span id="bc-network" class="text-tertiary font-mono">-</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-surface-container-low/50 rounded px-3 py-2">
+                            <span class="text-outline">Type:</span>
+                            <span id="bc-type" class="text-white font-mono text-[11px]">-</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-surface-container-low/50 rounded px-3 py-2">
+                            <span class="text-outline">Tx / Hash:</span>
+                            <span id="bc-sig" class="text-white font-mono text-[11px] truncate max-w-[180px]">-</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-surface-container-low/50 rounded px-3 py-2">
+                            <span class="text-outline">Proof Hash:</span>
+                            <span id="bc-hash" class="text-white font-mono text-[11px]">-</span>
+                        </div>
+                        <a id="bc-explorer-link" href="#" target="_blank" class="mt-2 text-tertiary font-label text-[10px] uppercase tracking-widest flex items-center gap-2 hover:text-white transition-colors">
+                            <span id="bc-explorer-text">View on Solana Explorer</span>
+                            <span class="material-symbols-outlined text-sm">open_in_new</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Reasoning -->
+            <div class="slide-up" style="animation-delay:0.6s">
+                <div class="font-label text-white text-xs tracking-widest uppercase mb-4 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                    AI Reasoning & Key Factors
+                </div>
+                <div id="reasoning-container" class="space-y-3">
+                    <!-- JS populated -->
+                </div>
+            </div>
+
+            <!-- Processing Info -->
+            <div class="glass-panel rounded-xl p-5 slide-up" style="animation-delay:0.7s">
+                <div class="font-label text-[10px] text-[#8b90a0] uppercase tracking-[0.2em] mb-4">Processing Telemetry</div>
+                <div class="space-y-3 text-xs">
+                    <div class="flex justify-between">
+                        <span class="text-outline">Policy File</span>
+                        <span id="info-policy" class="text-white font-mono">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-outline">Bill File</span>
+                        <span id="info-bill" class="text-white font-mono">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-outline">Processing Time</span>
+                        <span id="info-time" class="text-tertiary font-mono">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-outline">Timestamp</span>
+                        <span id="info-timestamp" class="text-white font-mono text-[11px]">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col gap-3 slide-up" style="animation-delay:0.8s">
+                <a href="/lab" class="flex items-center justify-center gap-2 px-6 py-3 bg-surface-container-high border border-outline-variant/30 rounded-lg font-label text-xs tracking-widest uppercase hover:bg-surface-bright transition-colors text-white">
+                    <span class="material-symbols-outlined text-sm">replay</span> Run New Analysis
+                </a>
+                <a href="/compare" class="flex items-center justify-center gap-2 px-6 py-3 bg-surface-container-high border border-outline-variant/30 rounded-lg font-label text-xs tracking-widest uppercase hover:bg-surface-bright transition-colors text-white">
+                    <span class="material-symbols-outlined text-sm">compare</span> Compare Policies
+                </a>
+            </div>
+        </aside>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="w-full py-12 px-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center border-t border-white/5 bg-[#131315]">
+    <div class="font-label uppercase tracking-[0.15em] text-[10px] text-[#8b90a0]">
+        © 2024 CLAIMGUARD AI. SYSTEM STATUS: <span class="text-tertiary">OPERATIONAL.</span>
+    </div>
+    <div class="flex flex-wrap gap-8 md:justify-end">
+        <a class="font-label uppercase tracking-[0.15em] text-[10px] text-[#8b90a0] hover:text-[#0070f3] transition-all" href="/">Protocol</a>
+        <a class="font-label uppercase tracking-[0.15em] text-[10px] text-[#8b90a0] hover:text-[#0070f3] transition-all" href="/lab">Neural Link</a>
+        <a class="font-label uppercase tracking-[0.15em] text-[10px] text-[#8b90a0] hover:text-[#0070f3] transition-all" href="/docs">API docs</a>
+    </div>
+</footer>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<script>
+// ─── Toast Notification System ─────────────────────────
+function showToast(message, type = 'info', duration = 4000) {
+    const container = document.getElementById('toast-container');
+    const icons = { success: 'check_circle', error: 'error', info: 'info' };
+    const colors = { success: '#34d399', error: '#ff4d4d', info: '#4cd7f6' };
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `
+        <span class="material-symbols-outlined" style="color:${colors[type]};font-variation-settings:'FILL' 1;font-size:18px">${icons[type]}</span>
+        <span>${message}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.classList.add('hide');
+        setTimeout(() => toast.remove(), 350);
+    }, duration);
+}
+
+// ─── Connect Node ───────────────────────────────────────
+function cgConnectNode() {
+    const current = localStorage.getItem('kaggle_node');
+    const url = prompt('Paste your Kaggle ngrok URL:\n(leave blank to disconnect)', current || '');
+    if (url === null) return;
+    if (url.trim()) {
+        const clean = url.trim().replace(/\/$/, '');
+        localStorage.setItem('kaggle_node', clean);
+        document.getElementById('connect-node-btn').classList.add('node-connected');
+        showToast(`Node connected: ${clean.substring(0, 40)}...`, 'success');
+    } else {
+        localStorage.removeItem('kaggle_node');
+        document.getElementById('connect-node-btn').classList.remove('node-connected');
+        showToast('Node disconnected.', 'info');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Mark connected node visually
+    if (localStorage.getItem('kaggle_node')) {
+        const btn = document.getElementById('connect-node-btn');
+        if (btn) btn.classList.add('node-connected');
+    }
+    const rawData = localStorage.getItem('claimguard_results');
+    const noDataView = document.getElementById('no-data-view');
+    const resultsMain = document.getElementById('results-main');
+
+    if (!rawData) {
+        noDataView.classList.remove('hidden');
+        resultsMain.classList.add('hidden');
+        return;
+    }
+
+    let data, evaluation, blockchain;
+    try {
+        data = JSON.parse(rawData);
+        evaluation = data.evaluation || data;
+        blockchain = data.blockchain || null;
+    } catch(e) {
+        noDataView.classList.remove('hidden');
+        resultsMain.classList.add('hidden');
+        return;
+    }
+
+    const fmt = (val) => {
+        if (val === undefined || val === null) return '$0';
+        return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
+    };
+
+    const totalBill = evaluation.total_bill_amount || 0;
+    const coveredAmt = evaluation.total_covered_amount || evaluation.final_payable_by_insurer || 0;
+    const notCoveredAmt = evaluation.total_not_covered_amount || 0;
+    const finalPayable = evaluation.final_payable_by_insurer || 0;
+
+    // === TOP STATS ===
+    document.getElementById('stat-total-bill').innerText = fmt(totalBill);
+    document.getElementById('stat-covered').innerText = fmt(finalPayable);
+    document.getElementById('stat-not-covered').innerText = fmt(notCoveredAmt);
+
+    const riskPct = totalBill > 0 ? Math.round((notCoveredAmt / totalBill) * 100) : 0;
+    const coveredPct = totalBill > 0 ? Math.round((finalPayable / totalBill) * 100) : 0;
+    document.getElementById('stat-risk').innerText = riskPct + '%';
+    setTimeout(() => { document.getElementById('risk-bar').style.width = riskPct + '%'; }, 300);
+
+    // === GAUGE ===
+    document.getElementById('gauge-payable').innerText = fmt(finalPayable);
+    document.getElementById('gauge-pct').innerText = coveredPct;
+
+    const circumference = 753.6;
+    const offset = circumference - (coveredPct / 100) * circumference;
+    setTimeout(() => {
+        const gc = document.getElementById('gauge-circle');
+        if (gc) gc.style.strokeDashoffset = offset;
+    }, 500);
+
+    // === HUMAN SUMMARY ===
+    const humanSummary = evaluation.human_readable_summary;
+    if (humanSummary) {
+        const section = document.getElementById('human-summary-section');
+        section.classList.remove('hidden');
+        document.getElementById('human-summary-text').innerText = humanSummary;
+    }
+
+    // === PAYABLE / NON-PAYABLE ITEMS ===
+    const payableList = document.getElementById('payable-items-list');
+    const nonPayableList = document.getElementById('non-payable-items-list');
+    let payableCount = 0;
+    let nonPayableCount = 0;
+
+    const breakdown = evaluation.breakdown || [];
+    breakdown.forEach((item, idx) => {
+        const card = document.createElement('div');
+
+        if (item.covered) {
+            payableCount++;
+            card.className = 'glass-panel rounded-xl p-5 border-l-2 border-l-emerald-400 hover:translate-y-[-2px] transition-transform duration-200';
+            card.innerHTML = `
+                <div class="flex items-start justify-between gap-4">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="material-symbols-outlined text-emerald-400 text-sm" style="font-variation-settings:'FILL' 1;">check_circle</span>
+                            <span class="font-headline font-bold text-white">${item.item || 'Item'}</span>
+                        </div>
+                        <p class="text-on-surface-variant text-sm mt-1">${item.reason || ''}</p>
+                        <div class="font-label text-[9px] uppercase tracking-widest text-outline mt-2">${item.category || 'general'}</div>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <div class="font-headline text-lg font-bold text-emerald-400">${fmt(item.payable_amount)}</div>
+                        <div class="text-xs text-outline">of ${fmt(item.cost)}</div>
+                    </div>
+                </div>`;
+            payableList.appendChild(card);
+        } else {
+            nonPayableCount++;
+            card.className = 'glass-panel rounded-xl p-5 border-l-2 border-l-[#ff4d4d] hover:translate-y-[-2px] transition-transform duration-200';
+            card.innerHTML = `
+                <div class="flex items-start justify-between gap-4">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="material-symbols-outlined text-[#ff4d4d] text-sm" style="font-variation-settings:'FILL' 1;">cancel</span>
+                            <span class="font-headline font-bold text-white">${item.item || 'Item'}</span>
+                        </div>
+                        <p class="text-on-surface-variant text-sm mt-1">${item.reason || ''}</p>
+                        <div class="font-label text-[9px] uppercase tracking-widest text-outline mt-2">${item.category || 'general'}</div>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <div class="font-headline text-lg font-bold text-[#ff4d4d]">${fmt(item.cost)}</div>
+                        <div class="text-xs text-outline">not covered</div>
+                    </div>
+                </div>`;
+            nonPayableList.appendChild(card);
+        }
+    });
+
+    document.getElementById('payable-count').innerText = payableCount;
+    document.getElementById('non-payable-count').innerText = nonPayableCount;
+
+    if (payableCount === 0) payableList.innerHTML = '<div class="text-outline text-sm italic">No payable items found in this claim.</div>';
+    if (nonPayableCount === 0) nonPayableList.innerHTML = '<div class="text-emerald-400/60 text-sm italic">All items are covered! No exclusions detected.</div>';
+
+    // === AI REASONING ===
+    const reasoningContainer = document.getElementById('reasoning-container');
+    const summary = evaluation.summary || {};
+    const keyReasons = summary.key_reasons || [];
+
+    if (keyReasons.length > 0) {
+        keyReasons.forEach(reason => {
+            reasoningContainer.innerHTML += `
+            <div class="glass-panel rounded-xl p-4 border-l-2 border-l-primary">
+                <div class="flex items-start gap-3">
+                    <span class="material-symbols-outlined text-primary text-sm mt-0.5">psychology</span>
+                    <span class="text-on-surface-variant text-sm leading-relaxed">${reason}</span>
+                </div>
+            </div>`;
+        });
+    }
+
+    // Add covered item names as reasoning chips
+    const coveredItems = summary.covered_items || [];
+    const notCoveredItems = summary.not_covered_items || [];
+
+    if (coveredItems.length > 0 || notCoveredItems.length > 0) {
+        let chipsHtml = '<div class="glass-panel rounded-xl p-4"><div class="font-label text-[9px] uppercase tracking-widest text-outline mb-3">Coverage Summary</div><div class="flex flex-wrap gap-2">';
+        coveredItems.forEach(item => {
+            chipsHtml += `<span class="bg-emerald-400/10 text-emerald-400 text-[11px] px-2 py-1 rounded font-label">✅ ${item}</span>`;
+        });
+        notCoveredItems.forEach(item => {
+            chipsHtml += `<span class="bg-[#ff4d4d]/10 text-[#ff4d4d] text-[11px] px-2 py-1 rounded font-label">❌ ${item}</span>`;
+        });
+        chipsHtml += '</div></div>';
+        reasoningContainer.innerHTML += chipsHtml;
+    }
+
+    if (reasoningContainer.innerHTML === '') {
+        reasoningContainer.innerHTML = '<div class="text-outline text-sm italic">No additional reasoning data available.</div>';
+    }
+
+    // === BLOCKCHAIN ===
+    if (blockchain && blockchain.signature) {
+        const card = document.getElementById('blockchain-card');
+        card.classList.remove('hidden');
+        document.getElementById('bc-network').innerText = blockchain.network || 'solana-devnet';
+        const sig = blockchain.signature;
+        document.getElementById('bc-sig').innerText = sig.substring(0, 16) + '...' + sig.substring(sig.length - 8);
+        document.getElementById('bc-hash').innerText = blockchain.hash || '-';
+        document.getElementById('bc-explorer-link').href = blockchain.explorer_url || '#';
+
+        // Show whether it is a real on-chain tx or hash proof
+        const isOnChain = blockchain.on_chain === true;
+        document.getElementById('bc-icon').innerText        = isOnChain ? 'verified' : 'fingerprint';
+        document.getElementById('bc-label').innerText       = isOnChain ? 'On-Chain Proof Recorded ✅' : 'Cryptographic Hash Proof 🔐';
+        document.getElementById('bc-type').innerText        = isOnChain ? 'Solana Memo Tx (devnet)' : 'SHA-256 Hash Proof (off-chain)';
+        document.getElementById('bc-desc').innerText        = isOnChain
+            ? 'Proof is permanently stored on Solana devnet. Click below to verify.'
+            : 'Cryptographically signed hash — verifiable offline. RPC unavailable at evaluation time.';
+        document.getElementById('bc-explorer-text').innerText = isOnChain ? 'View on Solana Explorer' : 'Explore Devnet (hash proof)';
+
+        if (!isOnChain) {
+            document.getElementById('bc-label').style.color = '#aec6ff';
+            showToast('Hash proof generated (on-chain tx unavailable this run)', 'info');
+        } else {
+            showToast('✅ On-chain proof recorded on Solana devnet!', 'success', 6000);
+        }
+    }
+
+    // === PROCESSING INFO ===
+    if (data.files) {
+        document.getElementById('info-policy').innerText = data.files.policy || '-';
+        document.getElementById('info-bill').innerText = data.files.bill || '-';
+    }
+    document.getElementById('info-time').innerText = data.processing_time_ms ? data.processing_time_ms + 's' : '-';
+    document.getElementById('info-timestamp').innerText = data.timestamp ? new Date(data.timestamp).toLocaleString() : '-';
+});
+</script>
+</body></html>

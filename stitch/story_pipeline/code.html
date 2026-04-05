@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CLAIMGUARD AI | The Sovereign Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=Manrope:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#23005c",
+                        "on-tertiary-fixed-variant": "#004e5c",
+                        "on-surface-variant": "#c1c6d7",
+                        "primary-container": "#0070f3",
+                        "primary": "#aec6ff",
+                        "tertiary": "#4cd7f6",
+                        "surface": "#131315",
+                        "surface-dim": "#131315",
+                        "on-tertiary-container": "#fdfeff",
+                        "primary-fixed": "#d8e2ff",
+                        "secondary-fixed": "#e9ddff",
+                        "tertiary-fixed-dim": "#4cd7f6",
+                        "on-primary-container": "#ffffff",
+                        "outline": "#8b90a0",
+                        "on-secondary-container": "#c4abff",
+                        "surface-container-high": "#2a2a2c",
+                        "secondary": "#d0bcff",
+                        "on-secondary": "#3c0091",
+                        "tertiary-fixed": "#acedff",
+                        "surface-container": "#201f21",
+                        "outline-variant": "#414754",
+                        "on-primary-fixed-variant": "#004397",
+                        "primary-fixed-dim": "#aec6ff",
+                        "surface-tint": "#aec6ff",
+                        "on-secondary-fixed-variant": "#5516be",
+                        "secondary-container": "#571bc1",
+                        "on-background": "#e5e1e4",
+                        "surface-variant": "#353437",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#d0bcff",
+                        "on-tertiary-fixed": "#001f26",
+                        "surface-container-highest": "#353437",
+                        "on-primary": "#002e6b",
+                        "inverse-surface": "#e5e1e4",
+                        "on-tertiary": "#003640",
+                        "on-error": "#690005",
+                        "surface-container-low": "#1c1b1d",
+                        "error": "#ffb4ab",
+                        "surface-container-lowest": "#0e0e10",
+                        "background": "#131315",
+                        "on-surface": "#e5e1e4",
+                        "surface-bright": "#39393b",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed": "#001a43",
+                        "inverse-primary": "#0059c5",
+                        "tertiary-container": "#008197",
+                        "inverse-on-surface": "#313032"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Manrope"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #131315;
+            color: #e5e1e4;
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-card {
+            background: rgba(28, 27, 29, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(174, 198, 255, 0.1);
+        }
+        .glow-line {
+            background: linear-gradient(180deg, transparent, #0070f3, transparent);
+            box-shadow: 0 0 15px rgba(0, 112, 243, 0.5);
+        }
+    </style>
+</head>
+<body class="selection:bg-primary-container selection:text-white">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-8 py-3 rounded-full mt-6 mx-auto max-w-5xl border border-white/10 bg-[#131315]/60 backdrop-blur-xl shadow-[0_10px_40px_-10px_rgba(0,112,243,0.15)]">
+<div class="text-xl font-bold tracking-[0.2em] text-white drop-shadow-[0_0_8px_rgba(0,112,243,0.4)] font-space-grotesk">
+            CLAIMGUARD AI
+        </div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#0070f3] border-b border-[#0070f3] pb-1 font-space-grotesk tracking-tight text-sm" href="#">Engine</a>
+<a class="text-[#c1c6d7] hover:text-white transition-colors font-space-grotesk tracking-tight text-sm hover:scale-105 transition-transform duration-300" href="#">Telemetry</a>
+<a class="text-[#c1c6d7] hover:text-white transition-colors font-space-grotesk tracking-tight text-sm hover:scale-105 transition-transform duration-300" href="#">Risk Matrix</a>
+<a class="text-[#c1c6d7] hover:text-white transition-colors font-space-grotesk tracking-tight text-sm hover:scale-105 transition-transform duration-300" href="#">Security</a>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#c1c6d7] cursor-pointer">notifications_active</span>
+<button class="bg-primary-container text-white px-5 py-2 rounded-md font-space-grotesk text-sm font-bold hover:scale-105 transition-transform duration-300 active:scale-95">
+                Connect Node
+            </button>
+</div>
+</nav>
+<main class="relative">
+<!-- Story Section: The Trap -->
+<section class="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden pt-32">
+<div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(0,112,243,0.1),_transparent_70%)]"></div>
+<div class="max-w-4xl w-full z-10 space-y-12">
+<div class="space-y-4">
+<span class="font-label text-[10px] tracking-[0.3em] text-tertiary uppercase">Phase 01: Identification</span>
+<h1 class="text-6xl md:text-8xl font-headline font-bold tracking-tighter leading-none text-white">
+                        THE <span class="text-transparent bg-clip-text bg-linear-to-r from-primary to-tertiary">TRAP</span>
+</h1>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-end">
+<div class="md:col-span-8">
+<p class="text-3xl md:text-5xl font-headline font-light leading-tight text-on-surface-variant">
+                            40% of insurance claims vanish into the void. Not because of fraud, but because of <span class="text-white font-medium">hidden wording</span> designed to trigger failure.
+                        </p>
+</div>
+<div class="md:col-span-4 flex flex-col gap-4">
+<div class="p-6 glass-card rounded-xl border-l-2 border-primary">
+<span class="text-4xl font-headline font-bold text-primary">40%</span>
+<p class="font-label text-[10px] uppercase tracking-widest text-outline mt-2">DENIAL PROBABILITY</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Scroll Indicator -->
+<div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+<span class="font-label text-[10px] tracking-[0.2em] text-outline uppercase">Initialize Pipeline</span>
+<div class="w-px h-12 bg-linear-to-b from-primary to-transparent"></div>
+</div>
+</section>
+<!-- Pipeline Section: How It Works -->
+<section class="py-32 px-6 bg-surface-container-lowest relative">
+<div class="max-w-6xl mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-24 gap-8">
+<div>
+<span class="font-label text-[10px] tracking-[0.3em] text-tertiary uppercase">Protocol Engine</span>
+<h2 class="text-5xl font-headline font-bold text-white tracking-tight">How It Works</h2>
+</div>
+<div class="max-w-md text-right">
+<p class="text-on-surface-variant text-sm font-body leading-relaxed">
+                            A sovereign neural chain that deconstructs complex policy structures in milliseconds.
+                        </p>
+</div>
+</div>
+<div class="relative">
+<!-- Vertical Line (Pipeline Backbone) -->
+<div class="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-white/5 md:-translate-x-1/2">
+<div class="glow-line w-full h-1/3 absolute top-0"></div>
+</div>
+<!-- Pipeline Steps -->
+<div class="space-y-32 relative">
+<!-- Step 1: Protocol Upload -->
+<div class="flex flex-col md:flex-row items-center gap-8 md:gap-0">
+<div class="w-full md:w-1/2 md:pr-24 text-right hidden md:block">
+<h3 class="text-2xl font-headline text-white font-bold mb-2">Protocol Upload</h3>
+<p class="text-on-surface-variant text-sm">Secure ingestion of encrypted policy documentation and incident metadata.</p>
+</div>
+<div class="relative z-10">
+<div class="w-16 h-16 rounded-full glass-card flex items-center justify-center border border-primary/30 shadow-[0_0_20px_rgba(0,112,243,0.2)]">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">upload_file</span>
+</div>
+</div>
+<div class="w-full md:w-1/2 md:pl-24 text-left">
+<span class="md:hidden block font-label text-[10px] text-tertiary mb-1">STEP 01</span>
+<div class="md:hidden">
+<h3 class="text-2xl font-headline text-white font-bold mb-2">Protocol Upload</h3>
+<p class="text-on-surface-variant text-sm mb-6">Secure ingestion of encrypted policy documentation and incident metadata.</p>
+</div>
+<div class="p-4 glass-card rounded-lg border-primary-container/10 inline-block">
+<code class="text-[10px] text-tertiary font-mono">STATUS: INGESTION_COMPLETE</code>
+</div>
+</div>
+</div>
+<!-- Step 2: Neural Decryption -->
+<div class="flex flex-col md:flex-row items-center gap-8 md:gap-0">
+<div class="w-full md:w-1/2 md:pr-24 text-right">
+<span class="md:hidden block font-label text-[10px] text-tertiary mb-1">STEP 02</span>
+<h3 class="text-2xl font-headline text-white font-bold mb-2">Neural Decryption</h3>
+<p class="text-on-surface-variant text-sm mb-6 md:mb-0">LLM-driven analysis of 'hidden' sub-clauses and exclusion zones.</p>
+</div>
+<div class="relative z-10">
+<div class="w-16 h-16 rounded-full glass-card flex items-center justify-center border border-tertiary/30 shadow-[0_0_20px_rgba(76,215,246,0.2)]">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</div>
+</div>
+<div class="w-full md:w-1/2 md:pl-24 text-left hidden md:block">
+<div class="p-4 glass-card rounded-lg border-primary-container/10 inline-block">
+<code class="text-[10px] text-tertiary font-mono">DECODING: SEMANTIC_LAYERS_04</code>
+</div>
+</div>
+</div>
+<!-- Step 3: Risk Vectoring -->
+<div class="flex flex-col md:flex-row items-center gap-8 md:gap-0">
+<div class="w-full md:w-1/2 md:pr-24 text-right hidden md:block">
+<div class="p-4 glass-card rounded-lg border-primary-container/10 inline-block">
+<code class="text-[10px] text-primary font-mono">SCENARIO_MAPPING: ACTIVE</code>
+</div>
+</div>
+<div class="relative z-10">
+<div class="w-16 h-16 rounded-full glass-card flex items-center justify-center border border-primary/30 shadow-[0_0_20px_rgba(0,112,243,0.2)]">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">hub</span>
+</div>
+</div>
+<div class="w-full md:w-1/2 md:pl-24 text-left">
+<span class="md:hidden block font-label text-[10px] text-tertiary mb-1">STEP 03</span>
+<h3 class="text-2xl font-headline text-white font-bold mb-2">Risk Vectoring</h3>
+<p class="text-on-surface-variant text-sm mb-6 md:mb-0">Cross-referencing claim details against historical denial patterns.</p>
+</div>
+</div>
+<!-- Step 4: Final Verdict -->
+<div class="flex flex-col md:flex-row items-center gap-8 md:gap-0">
+<div class="w-full md:w-1/2 md:pr-24 text-right">
+<span class="md:hidden block font-label text-[10px] text-tertiary mb-1">STEP 04</span>
+<h3 class="text-2xl font-headline text-white font-bold mb-2">Final Verdict</h3>
+<p class="text-on-surface-variant text-sm mb-6 md:mb-0">Generation of a pre-validated claim package with zero legal gaps.</p>
+</div>
+<div class="relative z-10">
+<div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center border border-white/20 shadow-[0_0_30px_rgba(0,112,243,0.5)]">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div class="w-full md:w-1/2 md:pl-24 text-left hidden md:block">
+<div class="p-4 glass-card rounded-lg border-primary-container/10 inline-block">
+<code class="text-[10px] text-primary font-mono">READY: DISPUTE_SECURED</code>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final Call to Action -->
+<section class="py-32 px-6">
+<div class="max-w-5xl mx-auto glass-card rounded-[2rem] p-12 md:p-24 overflow-hidden relative border-primary/20">
+<div class="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[100px] -mr-48 -mt-48"></div>
+<div class="relative z-10 text-center space-y-10">
+<h2 class="text-4xl md:text-6xl font-headline font-bold text-white tracking-tight">Stop the Bleeding.</h2>
+<p class="text-on-surface-variant text-lg max-w-2xl mx-auto">
+                        Don't let legacy systems dictate your financial outcome. Leverage ClaimGuard AI to secure your sovereignty.
+                    </p>
+<div class="flex flex-col sm:flex-row justify-center gap-4">
+<button class="bg-primary-container text-white px-10 py-4 rounded-xl font-headline font-bold text-lg hover:scale-105 transition-transform shadow-[0_10px_20px_rgba(0,112,243,0.3)]">
+                            Launch Engine
+                        </button>
+<button class="border border-outline-variant text-white px-10 py-4 rounded-xl font-headline font-bold text-lg hover:bg-white/5 transition-colors">
+                            View Risk Matrix
+                        </button>
+</div>
+</div>
+<!-- Abstract Visual -->
+<div class="mt-20 h-64 w-full rounded-2xl overflow-hidden grayscale contrast-125 opacity-40">
+<img alt="Cyber Circuitry" class="w-full h-full object-cover" data-alt="Abstract high-tech digital circuit pattern with glowing blue lines and data nodes in a dark futuristic space" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEswDuONHrR-dSB2I6heIgMuy9J6rJ1b5Qa8ZSWK4mtypcR4hrJFSwvjsS_ba7O5Ou9nu-ixMFYtDis-Dk2a2aj1NwEJ-SYrDFy0i-s4Q2BrN30_-hn9Jlc8CPdJoMNelaYVaIZoWD4NQAxCDgLh7yfMtklndOzOdRsczFcb0iLi-YqEcpGQStUTHEd8xG06xrXpo2EU_woq0F8oISd9XfCqK8BT_KKX0_7APhSrWtifgHTouIR7ITGLZhjfwEgXx1SUIzOom0BnA"/>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 px-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-[#131315] border-t border-white/5">
+<div>
+<span class="font-manrope uppercase tracking-[0.15em] text-[10px] text-[#8b90a0]">
+                © 2024 CLAIMGUARD AI. SYSTEM STATUS: OPERATIONAL.
+            </span>
+</div>
+<div class="flex flex-wrap md:justify-end gap-8">
+<a class="font-manrope uppercase tracking-[0.15em] text-[10px] text-[#8b90a0] hover:text-[#0070f3] transition-all" href="#">Protocol</a>
+<a class="font-manrope uppercase tracking-[0.15em] text-[10px] text-[#8b90a0] hover:text-[#0070f3] transition-all" href="#">Neural Link</a>
+<a class="font-manrope uppercase tracking-[0.15em] text-[10px] text-[#8b90a0] hover:text-[#0070f3] transition-all" href="#">API docs</a>
+<a class="font-manrope uppercase tracking-[0.15em] text-[10px] text-[#8b90a0] hover:text-[#0070f3] transition-all" href="#">Sovereign Privacy</a>
+</div>
+</footer>
+</body></html>
