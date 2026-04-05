@@ -74,26 +74,24 @@ flowchart TD
     I --> J[Proof and Signature]
     J --> A
 🔄 How It Works
-1. Upload Documents
-
+Upload Documents
 User uploads:
-
 Insurance Policy
 Repair Bill
-2. AI Processing
+AI Processing
 OCR extracts text
 AI understands policy clauses
 Matches bill items with coverage
-3. Decision Engine
+Decision Engine
 Calculates:
 Payable items
 Non-payable items
 Total payout
-4. Blockchain Proof
+Blockchain Proof
 Output is hashed
 Stored on blockchain
 Transaction signature generated
-5. Final Output
+Final Output
 Clean UI shows:
 Breakdown
 Explanation
@@ -163,14 +161,11 @@ Verifiable
 🏁 Final Impact
 
 Transforming insurance from:
+
 Confusion → Clarity
 Uncertainty → Certainty
 Trust → Proof
 
-❤️ Built For
-Hackathons
-Startups
-Real-world deployment
-🚀 ClaimGuard AI
+❤️ Built For: Hackathons, Startups, Real-world deployment
 
-Because fine print shouldn’t win.
+🚀 ClaimGuard AI — Because fine print shouldn’t win.
