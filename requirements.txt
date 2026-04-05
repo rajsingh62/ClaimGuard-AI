@@ -21,5 +21,4 @@ pydantic>=2.5.0
 
 # Utilities
 base58>=2.1.1
-hashlib
 asyncio
